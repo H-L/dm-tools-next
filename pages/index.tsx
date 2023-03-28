@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 
 export default function Home() {
-  const MapWithNoSSR = dynamic(() => import("../components/LeafletMap"), {
+  const MapWithNoSSR = dynamic(() => import("../components/Map/LeafletMap"), {
     ssr: false,
   });
 

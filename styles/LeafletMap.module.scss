@@ -1,7 +1,9 @@
+@import "@/node_modules/bootstrap/scss/functions";
+@import "@/node_modules/bootstrap/scss/variables";
+
 .dm-tools-leaflet-map {
   min-width: 400px;
   width: 100%;
-  max-width: 80vw;
   padding-bottom: 100%;
   border-radius: 8px;
   overflow: hidden;
@@ -14,9 +16,17 @@
   }
 
   :global(.leaflet-container) {
-    min-height: 60vh;
+    min-height: 70vh;
     height: 100%;
     max-height: 80vh;
     background-color: transparent;
+    z-index: 1;
   }
+}
+
+.map-debug-header {
+  position: relative;
+  z-index: 1000;
+  color: #fff;
+  box-shadow: $box-shadow;
 }
