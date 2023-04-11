@@ -4,9 +4,14 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 
 export default function Home() {
-  const MapWithNoSSR = dynamic(() => import("../components/LeafletMap"), {
+  const MapWithNoSSR = dynamic(() => import("../components/Map/LeafletMap"), {
     ssr: false,
   });
+
+  const imageDimensions = {
+    height: 9000,
+    width: 6429,
+  };
 
   return (
     <Layout>
@@ -20,7 +25,10 @@ export default function Home() {
           </p>
         </Row>
         <Row>
-          <MapWithNoSSR></MapWithNoSSR>
+          <MapWithNoSSR
+            tilesPath={"images/tiles"}
+            mapImageOrigDimensions={imageDimensions}
+          ></MapWithNoSSR>
         </Row>
       </Container>
     </Layout>
