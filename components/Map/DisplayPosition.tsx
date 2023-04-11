@@ -1,4 +1,4 @@
-import type { Map, MapOptions } from "leaflet";
+import type { Map, MapOptions, RasterCoords } from "leaflet";
 
 import Button from "react-bootstrap/Button";
 import { useState, useCallback, useEffect } from "react";
@@ -9,10 +9,12 @@ export function DisplayPosition({
   map,
   center,
   zoom,
+  raster,
 }: {
   map: Map;
   center: MapOptions["center"];
   zoom: number;
+  raster: RasterCoords | null;
 }) {
   const [position, setPosition] = useState(() => map.getCenter());
   const [currentZoom, setZoom] = useState(() => map.getZoom());
@@ -21,8 +23,9 @@ export function DisplayPosition({
     if (typeof center === "undefined") {
       return;
     }
-    map.setView(center, zoom);
-  }, [map, center, zoom]);
+
+    map.setView(raster?.getMaxBounds().getCenter() || center, zoom);
+  }, [map, center, zoom, raster]);
 
   const onMove = useCallback(() => {
     setPosition(map.getCenter());
