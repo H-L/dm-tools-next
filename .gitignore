@@ -35,5 +35,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-image-processing/
-public/images/tiles
+image-processing/*
+!image-processing/.gitkeep
+public/images/tiles/*
+!public/images/tiles/.gitkeep
