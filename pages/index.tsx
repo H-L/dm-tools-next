@@ -8,6 +8,11 @@ export default function Home() {
     ssr: false,
   });
 
+  const imageDimensions = {
+    height: 9000,
+    width: 6429,
+  };
+
   return (
     <Layout>
       <Container>
@@ -20,7 +25,10 @@ export default function Home() {
           </p>
         </Row>
         <Row>
-          <MapWithNoSSR></MapWithNoSSR>
+          <MapWithNoSSR
+            tilesPath={"images/tiles"}
+            mapImageOrigDimensions={imageDimensions}
+          ></MapWithNoSSR>
         </Row>
       </Container>
     </Layout>

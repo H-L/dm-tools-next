@@ -16,7 +16,7 @@ https://gdal.org/programs/gdal2tiles.html
 One command that seems to work quite well :
 
 ```bash
-gdal2tiles.py -p raster -z 0-5 -w leaflet /path/to/image public/images/tiles/
+gdal2tiles.py -p raster --xyz -z 0-5 -w leaflet /path/to/image public/images/tiles/
 ```
 
 ## Getting Started
