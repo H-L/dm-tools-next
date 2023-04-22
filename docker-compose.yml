@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    networks:
+      - dm-tools
+    ports:
+      - "5432:5432"
+
+  nextjs:
+    restart: unless-stopped
+    image: node:18-alpine
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/srv/next:rw
+    working_dir: /srv/next
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+
+volumes:
+  postgres:
+
+networks:
+  dm-tools:
+    driver: bridge

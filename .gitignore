@@ -39,3 +39,7 @@ image-processing/*
 !image-processing/.gitkeep
 public/images/tiles/*
 !public/images/tiles/.gitkeep
+
+# prisma
+*.env*
+*.db
