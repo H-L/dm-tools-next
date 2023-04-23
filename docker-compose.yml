@@ -26,6 +26,10 @@ services:
     depends_on:
       - postgres
 
+  tiles:
+    tty: true
+    build: ./tiles
+
 volumes:
   postgres:
 
