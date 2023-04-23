@@ -1,4 +1,4 @@
-import Layout from "@/components/Layout";
+import Layout from "../components/Layout";
 import dynamic from "next/dynamic";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";

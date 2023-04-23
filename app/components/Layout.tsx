@@ -1,5 +1,5 @@
 import Head from "next/head";
-import NavigationHeader from "@/components/NavigationHeader";
+import NavigationHeader from "../components/NavigationHeader";
 
 export default function Layout({ children }) {
   return (
