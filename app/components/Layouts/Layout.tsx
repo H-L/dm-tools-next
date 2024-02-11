@@ -1,5 +1,6 @@
 import Head from "next/head";
-import NavigationHeader from "../components/NavigationHeader";
+import Container from "react-bootstrap/Container";
+import NavigationHeader from "../NavigationHeader";
 
 export default function Layout({ children }) {
   return (
@@ -10,10 +11,9 @@ export default function Layout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <NavigationHeader></NavigationHeader>
-        {children}
-      </main>
+
+      <NavigationHeader></NavigationHeader>
+      <main>{children}</main>
     </>
   );
 }
