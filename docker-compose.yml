@@ -19,7 +19,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - .:/srv/next:rw
+      - ./app:/srv/next:rw
     working_dir: /srv/next
     env_file:
       - .env
