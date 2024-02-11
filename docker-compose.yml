@@ -20,6 +20,7 @@ services:
       - "3000:3000"
     volumes:
       - ./app:/srv/next:rw
+      - public-images-tiles:/srv/next/public/images/tiles/
     working_dir: /srv/next
     env_file:
       - .env
@@ -29,9 +30,12 @@ services:
   tiles:
     tty: true
     build: ./tiles
+    volumes:
+      - public-images-tiles:/usr/app/src/public/images/tiles/
 
 volumes:
   postgres:
+  public-images-tiles:
 
 networks:
   dm-tools:
