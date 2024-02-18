@@ -26,6 +26,8 @@ services:
       - .env
     depends_on:
       - postgres
+    networks:
+      - dm-tools
 
   tiles:
     tty: true

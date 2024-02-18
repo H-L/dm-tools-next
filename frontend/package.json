@@ -6,14 +6,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prisma:dotenv": "dotenv -e ../.env.prismaenv -- ",
+    "prisma:studio": "npm run prisma:dotenv npx prisma studio",
+    "prisma:migrate:deploy": "prisma:dotenv npx prisma migrate deploy"
   },
   "dependencies": {
-    "@prisma/client": "^4.13.0",
+    "@prisma/client": "^5.9.1",
     "@types/node": "^20.11.19",
     "@types/react": "^18.2.56",
     "@types/react-dom": "^18.2.19",
     "bootstrap": "^5.2.3",
+    "dotenv": "^16.4.4",
     "eslint": "^8.56.0",
     "fs-extra": "^11.2.0",
     "leaflet": "^1.9.3",
@@ -31,7 +35,7 @@
     "@types/leaflet": "^1.9.3",
     "@types/leaflet-rastercoords": "^1.0.2",
     "eslint-config-next": "^14.1.0",
-    "prisma": "^4.13.0",
+    "prisma": "^5.9.1",
     "sass": "^1.60.0"
   }
 }

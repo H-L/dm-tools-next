@@ -24,7 +24,7 @@ export default function MapModal({ show, handleClose }: MapModalProps) {
       formData.append("mapFile", file);
       formData.append("mapName", mapNameInput.value);
 
-      fetch("/api/map", {
+      fetch("/api/maps", {
         method: "POST",
         body: formData,
       })
@@ -32,7 +32,6 @@ export default function MapModal({ show, handleClose }: MapModalProps) {
           response.json();
         })
         .then((data) => {
-          console.log(data);
           resolve(data);
         })
         .catch((error) => {

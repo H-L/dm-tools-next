@@ -1,21 +1,32 @@
 // Import necessary modules
+import { Map } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import { outputFile } from "fs-extra";
+import { db } from "@/db";
 
-export async function GET(req: NextRequest) {
-  return NextResponse.json({ Message: "Success", status: 200 });
+async function createMap({
+  mapName,
+  mapPath,
+}: {
+  mapName: string;
+  mapPath: string;
+}) {
+  await db.map.create({
+    data: {
+      name: mapName,
+      tilesPath: mapPath,
+    },
+  });
 }
-// Define the POST handler for the file upload
+
 export async function POST(req: NextRequest) {
   // Parse the incoming form data
   const formData = await req.formData();
 
   // Get the file from the form data
-  const mapName = formData.get("mapName");
+  const mapName = formData.get("mapName") as string;
   const file = formData.get("mapFile") as File;
-
-  console.log(mapName, file);
 
   if (!mapName) {
     // If no file is received, return a JSON response with an error and a 400 status code
@@ -36,16 +47,22 @@ export async function POST(req: NextRequest) {
 
   // Replace spaces in the file name with underscores
   const filename = file.name.replaceAll(" ", "_");
-  console.log(filename);
 
-  const mapImagePath = `public/images/tiles/${mapName}/${filename}`;
+  const mapPath = `public/images/tiles/${mapName}/${filename}`;
 
   try {
     // Write the file to the specified directory (public/assets) with the modified filename
-    // await outputFile(
-    //   path.join(process.cwd(), mapImagePath),
-    //   buffer
-    // );
+    await outputFile(path.join(process.cwd(), mapPath), buffer).then(() =>
+      createMap({ mapName, mapPath })
+        .then(async () => {
+          await prisma.$disconnect();
+        })
+        .catch(async (e) => {
+          console.error("prisma error", e);
+          await prisma.$disconnect();
+          return NextResponse.json({ Message: "Failed database", status: 500 });
+        })
+    );
 
     // TODO Enregistrer la map en DB
     // TODO Lancer le script pour générer les tiles
@@ -54,7 +71,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ Message: "Success", status: 201 });
   } catch (error) {
     // If an error occurs during file writing, log the error and return a JSON response with a failure message and a 500 status code
-    console.log("Error occurred ", error);
     return NextResponse.json({ Message: "Failed", status: 500 });
   }
 }
