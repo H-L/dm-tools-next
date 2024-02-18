@@ -1,6 +1,12 @@
-FROM python:3.10-alpine
+FROM python:3.11-alpine3.19
 
 WORKDIR /usr/app/src
+
+EXPOSE 8001
+
+ENV VIRTUAL_ENV=/opt/venv
+RUN python3 -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN apk add --no-cache geos
 RUN apk add --no-cache gcc
@@ -18,6 +24,7 @@ RUN mkdir -p /usr/src/app/file
 
 COPY . .
 
-RUN pip3 install --upgrade pip
-RUN pip3 install GDAL==3.5.3
-RUN pip3 install gdal2tiles
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+# CMD ["flask", "run", "--app", "api", "-h", "0.0.0.0", "-p", "8001", "--debug"]

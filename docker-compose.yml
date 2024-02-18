@@ -32,8 +32,11 @@ services:
   tiles:
     tty: true
     build: ./tiles
+    command: flask --app api run -h 0.0.0.0 -p 8001 --debug
     volumes:
       - public-images-tiles:/usr/app/src/public/images/tiles/
+    ports:
+      - "8001:8001"
 
 volumes:
   postgres:
