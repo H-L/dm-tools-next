@@ -1,4 +1,4 @@
-FROM python:3.11-alpine3.19
+FROM python:3.13-alpine3.21
 
 WORKDIR /usr/app/src
 
@@ -12,6 +12,8 @@ RUN apk add --no-cache geos
 RUN apk add --no-cache gcc
 RUN apk add --no-cache gdal
 RUN apk add --no-cache gdal-dev
+RUN apk add --no-cache gdal-driver-png
+RUN apk add --no-cache gdal-driver-jpeg
 RUN apk add --no-cache build-base
 RUN apk add --no-cache zlib
 
