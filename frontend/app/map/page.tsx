@@ -28,7 +28,7 @@ export default function Map() {
       </Row>
       <Row>
         <MapWithNoSSR
-          tilesPath={"/images/tiles"}
+          tilesPath={"/images/tiles/Waterdeep"}
           mapImageOrigDimensions={imageDimensions}
         ></MapWithNoSSR>
       </Row>

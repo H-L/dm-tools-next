@@ -19,6 +19,10 @@ One command that seems to work quite well :
 gdal2tiles.py -p raster --xyz -z 0-5 -w leaflet /path/to/image public/images/tiles/
 ```
 
+### Other useful ressources
+
+- https://mits003.github.io/studio_null/2021/07/install-gdal-on-macos/
+
 ## Getting Started
 
 First, run the development server:

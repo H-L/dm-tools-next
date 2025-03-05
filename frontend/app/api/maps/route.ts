@@ -2,19 +2,34 @@
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import { outputFile } from "fs-extra";
-import { db } from "@/db";
+import { prisma } from "@/db";
+import sizeOf from "buffer-image-size";
 
-async function createMap({
-  mapName,
-  mapPath,
-}: {
+interface CreateMapParams {
   mapName: string;
   mapPath: string;
-}) {
-  await db.map.create({
+  originalFilename: string;
+  width: number;
+  height: number;
+  type: string;
+}
+
+async function createMapInDb({
+  mapName,
+  mapPath,
+  originalFilename,
+  width,
+  height,
+  type,
+}: CreateMapParams) {
+  await prisma.map.create({
     data: {
       name: mapName,
       tilesPath: mapPath,
+      originalFilename,
+      width,
+      height,
+      type,
     },
   });
 }
@@ -43,32 +58,44 @@ export async function POST(req: NextRequest) {
 
   // Convert the file data to a Buffer
   const buffer = Buffer.from(await file.arrayBuffer());
-
+  const dimensions = await sizeOf(buffer);
   // Replace spaces in the file name with underscores
-  const filename = file.name.replaceAll(" ", "_");
-
-  const mapPath = `public/images/tiles/${mapName}/${filename}`;
+  const originalFilename = file.name.replaceAll(" ", "_");
+  const mapPath = `tiles/${mapName}/`;
+  const fullMapPath = `public/images/${mapPath}/${originalFilename}`;
 
   try {
     // Write the file to the specified directory (public/assets) with the modified filename
-    await outputFile(path.join(process.cwd(), mapPath), buffer).then(() =>
-      createMap({ mapName, mapPath })
-        .then(async () => {
-          await db.$disconnect();
-        })
-        .catch(async (e) => {
-          console.error("prisma error", e);
-          await db.$disconnect();
-          return NextResponse.json({ Message: "Failed database", status: 500 });
-        })
-    );
+    await outputFile(path.join(process.cwd(), fullMapPath), buffer);
 
-    // TODO Lancer le script pour générer les tiles
+    // Set formData for POST request to tiles service
+    const tilesPostFormData = new FormData();
+    tilesPostFormData.append("mapName", mapName);
+    tilesPostFormData.append("originalFileName", file);
 
-    // Return a JSON response with a success message and a 201 status code
+    const response = await fetch("http://tiles:8001/tiles", {
+      method: "POST",
+      body: tilesPostFormData,
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to upload tiles");
+    }
+
+    // Create a new map element in Prisma DB
+    await createMapInDb({
+      mapName,
+      mapPath,
+      originalFilename,
+      ...dimensions,
+    });
+
+    // Close DB connection
+    await prisma.$disconnect();
+
     return NextResponse.json({ Message: "Success", status: 201 });
   } catch (error) {
     // If an error occurs during file writing, log the error and return a JSON response with a failure message and a 500 status code
-    return NextResponse.json({ Message: "Failed", status: 500 });
+    return NextResponse.json({ Message: "Failed", status: 500, error });
   }
 }

@@ -66,7 +66,9 @@ function LeafletMapWithDebug({
       >
         {raster ? (
           <TileLayer
-            url={`${tilesPath}/{z}/{x}/{y}.png`}
+            url={`${
+              tilesPath.endsWith("/") ? tilesPath.slice(0, -1) : tilesPath
+            }/{z}/{x}/{y}.png`}
             noWrap={true}
             attribution={""}
             ref={setTileLayer}

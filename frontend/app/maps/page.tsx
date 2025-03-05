@@ -1,5 +1,7 @@
 import MapsList from "../../components/MapsList/MapsList";
-import { fetchMaps } from "@/db/queries/fetchMaps";
+
+// TODO: Use fetch instead of prisma directly
+import { fetchMaps } from "@/db/queries/maps";
 
 export default async function Maps({
   children,

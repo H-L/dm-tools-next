@@ -4,6 +4,7 @@ import type { Map } from "@prisma/client";
 import { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Table } from "react-bootstrap";
 import MapModal from "../../components/MapModal/MapModal";
+import MapsListItem from "./MapsListItem";
 
 export default function MapsList({
   children,
@@ -41,17 +42,12 @@ export default function MapsList({
                 <th>#</th>
                 <th>Name</th>
                 <th>Image path</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {maps.map((map) => {
-                return (
-                  <tr key={map.id}>
-                    <td>{map.id}</td>
-                    <td>{map.name}</td>
-                    <td>{map.tilesPath}</td>
-                  </tr>
-                );
+                return <MapsListItem key={map.id} map={map} />;
               })}
             </tbody>
           </Table>

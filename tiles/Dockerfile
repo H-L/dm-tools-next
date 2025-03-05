@@ -1,10 +1,9 @@
-FROM python:3.13-alpine3.21
+FROM python:3.13-alpine3.21 AS base
 
-WORKDIR /usr/app/src
-
-EXPOSE 8001
+WORKDIR /app
 
 ENV VIRTUAL_ENV=/opt/venv
+ENV FLASK_ENV="docker"
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
@@ -22,11 +21,13 @@ RUN export C_INCLUDE_PATH=/usr/include/gdal
 RUN export LDFLAGS="-L/usr/local/opt/zlib/lib"
 RUN export CPPFLAGS="-I/usr/local/opt/zlib/include"
 
-RUN mkdir -p /usr/src/app/file
+RUN mkdir -p /app
 
 COPY . .
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# CMD ["flask", "run", "--app", "api", "-h", "0.0.0.0", "-p", "8001", "--debug"]
+EXPOSE 8001
+
+# CMD ["flask", "--app", "api/index", "run", "-h", "0.0.0.0", "-p", "8001", "--debug"]

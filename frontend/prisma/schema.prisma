@@ -16,4 +16,8 @@ model Map {
   id Int @id @default(autoincrement())
   name String
   tilesPath String @unique
+  originalFilename String
+  width Int
+  height Int
+  type String
 }
