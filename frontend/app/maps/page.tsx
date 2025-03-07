@@ -1,14 +1,9 @@
-import MapsList from "../../components/MapsList/MapsList";
-
-// TODO: Use fetch instead of prisma directly
-import { fetchMaps } from "@/db/queries/maps";
+import MapsListPage from "../../components/MapsListPage/MapsListPage";
 
 export default async function Maps({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const maps = await fetchMaps();
-
-  return <MapsList maps={maps}>{children}</MapsList>;
+  return <MapsListPage>{children}</MapsListPage>;
 }

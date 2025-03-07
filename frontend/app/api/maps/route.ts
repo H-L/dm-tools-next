@@ -1,6 +1,12 @@
 // Import necessary modules
 import { NextRequest, NextResponse } from "next/server";
 import { createMapFromFile } from "@/src/useCases/maps/createMapFromFile";
+import { findManyMaps } from "@/src/infrastructure/repositories/maps/findManyMaps";
+
+export async function GET(req: NextRequest) {
+  const maps = await findManyMaps();
+  return NextResponse.json(maps);
+}
 
 export async function POST(req: NextRequest) {
   // Parse the incoming form data
