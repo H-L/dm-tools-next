@@ -1,9 +1,15 @@
-import React, { use } from "react";
+import React from "react";
 import type { Map } from "@prisma/client";
 import { Table } from "react-bootstrap";
 import MapsListItem from "./MapsListItem";
 
-export default function MapsList({ maps }: { maps: Map[] }) {
+export default function MapsList({
+  maps,
+  handleDeleteMap,
+}: {
+  maps: Map[];
+  handleDeleteMap: (id: number) => void;
+}) {
   return (
     <Table>
       <thead>
@@ -16,7 +22,13 @@ export default function MapsList({ maps }: { maps: Map[] }) {
       </thead>
       <tbody>
         {maps.map((map) => {
-          return <MapsListItem key={map.id} map={map} />;
+          return (
+            <MapsListItem
+              key={map.id}
+              map={map}
+              handleDelete={handleDeleteMap}
+            />
+          );
         })}
       </tbody>
     </Table>

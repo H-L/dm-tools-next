@@ -23,6 +23,12 @@ export default function MapsListPage({
     setShow(false);
   };
   const handleOpen = () => setShow(true);
+  const handleDeleteMap = async (id: number) => {
+    await fetch(`/api/maps/${id}`, {
+      method: "DELETE",
+    });
+    mutate();
+  };
 
   return (
     <>
@@ -41,7 +47,13 @@ export default function MapsListPage({
             <Button onClick={handleOpen}>+ New Map</Button>
           </Col>
         </Row>
-        <Row>{maps ? <MapsList maps={maps} /> : <Loading />}</Row>
+        <Row>
+          {maps ? (
+            <MapsList maps={maps} handleDeleteMap={handleDeleteMap} />
+          ) : (
+            <Loading />
+          )}
+        </Row>
         {children}
       </Container>
     </>

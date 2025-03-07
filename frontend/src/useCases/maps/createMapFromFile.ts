@@ -2,8 +2,8 @@ import sizeOf from "buffer-image-size";
 import { outputFile } from "fs-extra";
 import path from "path";
 
-import { createMapInDb } from "@/src/infrastructure/repositories/maps/createMapInDb";
-import { createMapTiles } from "@/src/infrastructure/repositories/maps/createMapTiles";
+import { createMapInDb } from "@/src/infrastructure/repositories/maps/db/createMapInDb";
+import { createMapTiles } from "@/src/infrastructure/repositories/maps/tiles/createMapTiles";
 import { buildMapPath } from "@/src/utils/buildMapPath";
 
 export async function createMapFromFile(mapName: string, file: File) {
@@ -50,6 +50,6 @@ export async function createMapFromFile(mapName: string, file: File) {
     });
   } catch (error) {
     // TODO: Create custom error ?
-    throw new Error("Failed to upload map", {});
+    throw new Error("Failed to upload map");
   }
 }

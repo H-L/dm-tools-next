@@ -1,11 +1,11 @@
 // Import necessary modules
 import { NextRequest, NextResponse } from "next/server";
 import { createMapFromFile } from "@/src/useCases/maps/createMapFromFile";
-import { findManyMaps } from "@/src/infrastructure/repositories/maps/findManyMaps";
+import { findManyMaps } from "@/src/infrastructure/repositories/maps/db/findManyMaps";
 
 export async function GET(req: NextRequest) {
   const maps = await findManyMaps();
-  return NextResponse.json(maps);
+  return NextResponse.json(maps, { status: 200 });
 }
 
 export async function POST(req: NextRequest) {
@@ -26,16 +26,15 @@ export async function POST(req: NextRequest) {
 
   // Check if a file is received
   if (!file) {
-    // If no file is received, return a JSON response with an error and a 400 status code
     return NextResponse.json({ error: "No files received." }, { status: 400 });
   }
 
+  // Create a new map from the file
   try {
-    createMapFromFile(mapName, file);
+    await createMapFromFile(mapName, file);
 
-    return NextResponse.json({ Message: "Success", status: 201 });
+    return NextResponse.json({ Message: "Success" }, { status: 201 });
   } catch (error) {
-    // If an error occurs during file writing, log the error and return a JSON response with a failure message and a 500 status code
-    return NextResponse.json({ Message: "Failed", status: 500, error });
+    return NextResponse.json({ Message: "Failed", error }, { status: 500 });
   }
 }

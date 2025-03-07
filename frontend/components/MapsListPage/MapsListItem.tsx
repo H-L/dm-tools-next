@@ -8,12 +8,13 @@ import Link from "next/link";
 
 export default function MapsListItem({
   map: { id, name, tilesPath },
+  handleDelete = () => {},
 }: {
   map: Map;
+  handleDelete: (id: number) => void;
   children?: React.ReactNode;
 }) {
   const handleEdit = (id: number) => console.log(`editing map : ${id}`);
-  const handleDelete = (id: number) => console.log(`deleting map : ${id}`);
 
   return (
     <tr key={id}>
