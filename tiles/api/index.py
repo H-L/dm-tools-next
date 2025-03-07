@@ -39,7 +39,7 @@ def handle_error_occured(e):
 
 @app.route('/', methods=['GET'])
 def home():
-  return jsonify(message="Success ! Welcome to DM Tiles", status=200);
+  return jsonify(message="Success ! Welcome to DM Tiles", status=200), 200;
 
 @app.route('/tiles', methods=['GET', 'POST', 'DELETE'])
 def tiles():
@@ -49,10 +49,10 @@ def tiles():
       uploaded_file = request.files['file']
 
       if uploaded_file.filename == '':
-        return jsonify(message="No file selected", status=400);
+        return jsonify(message="No file selected", status=400), 400;
 
       if allowed_file(uploaded_file.filename) == False:
-        return jsonify(message="Invalid file format", status=400);
+        return jsonify(message="Invalid file format", status=400), 400;
 
       if uploaded_file and allowed_file(uploaded_file.filename):
         # Create map directory
@@ -66,18 +66,38 @@ def tiles():
 
         create_tiles(map_dir_path, map_path)
 
-        return jsonify(message="Success", map_dir_path=map_dir_path, map_path=map_path, status=200);
+        return jsonify(message="Success", map_dir_path=map_dir_path, map_path=map_path, status=200), 200;
 
     except Exception as e:
       print(e)
-      return jsonify(message="Failed. Exception raised.", status=500, code=e.code, name=e.name, description=e.description);
+      return jsonify(message="Failed. Exception raised.", status=500, code=e.code, name=e.name, description=e.description), 500;
+
+  if request.method == 'DELETE':
+    try:
+      map_name = request.form.get('mapName')
+      map_dir_path=os.path.join(app.static_folder, app.config['UPLOAD_TILES_FOLDER'], map_name)
+
+      print('MAP NAME', map_dir_path)
+
+      if os.path.exists(map_dir_path):
+        print('MAP EXISTS')
+        os.system('rm -r {}'.format(map_dir_path))
+        return jsonify(message="Success", status=200), 200;
+      else:
+        print('MAP DOES NOT EXISTS')
+        return jsonify(message="Map not found", status=404), 404;
+
+    except Exception as e:
+      print(e)
+      return jsonify(message="Failed. Exception raised.", status=500, code=e.code, name=e.name, description=e.description), 500;
+
 
   if request.method == 'GET':
-    return jsonify(message="Tiles !", status=200);
-    #   return jsonify(message="Success", map_original_file_path=map_original_file_path, map_path=map_path, status=200);
-    #     # return jsonify(message="Success", status=200);
+    return jsonify(message="Tiles !", status=200), 200;
+    #   return jsonify(message="Success", map_original_file_path=map_original_file_path, map_path=map_path, status=200), 200;
+    #     # return jsonify(message="Success", status=200), 200;
   else:
-    return jsonify(message="Failed because why not", status=405);
+    return jsonify(message="Failed because why not", status=405), 405;
 
 @app.route('/tiles/<path:subpath>', methods=['GET'])
 def tiles_serve(subpath):
@@ -85,7 +105,7 @@ def tiles_serve(subpath):
     print('SUBPATH', subpath)
     return send_file(os.path.join(app.static_folder, app.config['UPLOAD_TILES_FOLDER'], subpath))
   else:
-    return jsonify(message="Failed because why not", status=405);
+    return jsonify(message="Failed because why not", status=405), 405;
 
 if __name__ == "__main__":
     app.run(debug=True)

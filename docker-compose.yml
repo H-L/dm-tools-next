@@ -32,7 +32,7 @@ services:
   tiles:
     tty: true
     build: ./tiles
-    command: flask --app api run -h 0.0.0.0 -p 8001 --debug
+    command: flask --app api/index run -h 0.0.0.0 -p 8001 --debug
     volumes:
       - public-images-tiles:/app/api/public/images/tiles/
     ports:

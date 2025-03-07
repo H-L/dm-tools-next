@@ -2,6 +2,10 @@
 
 This the `README` for the tiles server, built with Flask, since gdal2tiles only exists as a Python Script.
 
+## TODO
+
+- [ ] Add `pipenv` support for this project
+
 ## Generate maps
 
 Install `gdal` and `gdal2tiles`
