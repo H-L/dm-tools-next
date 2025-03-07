@@ -46,7 +46,7 @@ def tiles():
   if request.method == 'POST':
     try:
       map_name = request.form.get('mapName')
-      uploaded_file = request.files['originalFileName']
+      uploaded_file = request.files['file']
 
       if uploaded_file.filename == '':
         return jsonify(message="No file selected", status=400);

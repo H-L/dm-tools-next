@@ -30,4 +30,4 @@ RUN pip install -r requirements.txt
 
 EXPOSE 8001
 
-# CMD ["flask", "--app", "api/index", "run", "-h", "0.0.0.0", "-p", "8001", "--debug"]
+# CMD ["flask", "--app", "api", "run", "-h", "0.0.0.0", "-p", "8001", "--debug"]
